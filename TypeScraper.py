@@ -36,7 +36,7 @@ types = ["bug",
 "steel",
 "water"]
 
-pokemonList = soup.find_all('tr', style="background:#FFF")
+pokemonList = soup.findAll('tr', style="background:#FFF")
 # where index 7 holds the name 9 holds the type
 monoType = []
 # where index 9 and 11 hold the types
@@ -70,7 +70,9 @@ for i in range(len(monoType)):
     pokemonType = monoType[i][9].a.span.text
     if pokemonType.lower() == findType:
         # append the contents (for now)
+        #pokemonName = monoType[i][7].
         findPokemonMono.append(monoType[i])
+
 
 for i in range(len(dualType)):
     # find dual-type pokemon with desired type
@@ -79,15 +81,29 @@ for i in range(len(dualType)):
     if pokemonType1.lower() == findType or pokemonType2.lower() == findType:
         findPokemonDual.append(dualType[i])
 
+
+# throwing everything into a .csv file
+filename = findType + "TypePokemon.csv"
+f = open(filename, "w")
+headers = "Pokemon, Type\n"
+f.write(headers)
 # print out the pokemon
 print("Mono-Type Pokemon")
+# write to file
+f.write("Mono-Type Pokemon\n")
 for i in range(len(findPokemonMono)):
+    # print to terminal
     print(findPokemonMono[i][7].a.text + " " + findPokemonMono[i][9].a.span.text)
-
+    # write to file
+    f.write(findPokemonMono[i][7].a.text + "," + findPokemonMono[i][9].a.span.text + "\n") 
 print()
-
 print("Dual-Type Pokemon")
+f.write("Dual-Type Pokemon" + "\n")
 for i in range(len(findPokemonDual)):
     print(findPokemonDual[i][7].a.text + " " + findPokemonDual[i][9].a.span.text + "/" + findPokemonDual[i][11].a.span.text)
+    f.write(findPokemonDual[i][7].a.text + "," + findPokemonDual[i][9].a.span.text + "/" + findPokemonDual[i][11].a.span.text + "\n")
 
+# print the pokemon name and its type
 print("Total number of " + findType + " type Pokemon is: " + str(len(findPokemonDual) + len(findPokemonMono)))
+f.write("Total number of " + findType + " type Pokemon is:," + str(len(findPokemonDual) + len(findPokemonMono)) + "\n")
+
